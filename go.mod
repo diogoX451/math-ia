@@ -2,7 +2,11 @@ module math-ia
 
 go 1.24.3
 
-require github.com/go-chi/chi/v5 v5.2.1
+require (
+	github.com/go-chi/chi/v5 v5.2.1
+	github.com/joho/godotenv v1.5.1
+	github.com/milvus-io/milvus-sdk-go/v2 v2.4.2
+)
 
 require (
 	github.com/cockroachdb/errors v1.9.1 // indirect
@@ -12,12 +16,9 @@ require (
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0 // indirect
-	github.com/joho/godotenv v1.5.1 // indirect
-	github.com/kljensen/snowball v0.10.0 // indirect
 	github.com/kr/pretty v0.3.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/milvus-io/milvus-proto/go-api/v2 v2.4.10-0.20240819025435-512e3b98866a // indirect
-	github.com/milvus-io/milvus-sdk-go/v2 v2.4.2 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rogpeppe/go-internal v1.8.1 // indirect
 	github.com/tidwall/gjson v1.14.4 // indirect
