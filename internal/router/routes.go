@@ -3,6 +3,7 @@ package router
 import (
 	"math-ia/internal/api"
 	"math-ia/internal/ia/ollama"
+	"math-ia/internal/ia/vectorstore"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -36,14 +37,15 @@ func withCORS(h http.Handler) http.Handler {
 	})
 }
 
-func NewRouter(ollamaClient *ollama.Client) http.Handler {
+func NewRouter(ollamaClient *ollama.Client, vector *vectorstore.Milvus) http.Handler {
 	r := chi.NewRouter()
 
 	r.Use(withCORS)
 
-	handler := api.NewHandler(ollamaClient)
+	handler := api.NewHandler(ollamaClient, vector)
 
 	r.Post("/ask", handler.Ask)
+	r.Post("/ask-with-context", handler.AskWithContext)
 
 	return r
 }
