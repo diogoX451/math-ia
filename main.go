@@ -3,11 +3,12 @@ package main
 import (
 	"context"
 	"log"
+	"math-ia/internal/db"
 	"math-ia/internal/ia/ollama"
 	"math-ia/internal/ia/vectorstore"
 	"math-ia/internal/ia/vectorstore/config"
 	"math-ia/internal/router"
-	"math-ia/internal/tools"
+	"math-ia/internal/tools/ingestor"
 	"net/http"
 	"os"
 
@@ -22,6 +23,15 @@ func init() {
 
 func main() {
 	_ = godotenv.Load()
+
+	urlDatabase := os.Getenv("DATABASE_URL")
+	if urlDatabase == "" {
+		panic("DATABASE_URL is not set")
+	}
+
+	if err := db.Init(urlDatabase); err != nil {
+		log.Fatalf("Erro ao inicializar o banco de dados: %v", err)
+	}
 
 	config := config.NewMilvusConfig(
 		os.Getenv("MILVUS_HOST"),
@@ -38,26 +48,26 @@ func main() {
 
 	_ = milvus.Client.DropCollection(ctx, "docs")
 
-	err = milvus.CreateCollectionIfNotExists(ctx, "docs", 768)
-	if err != nil {
+	if err := milvus.CreateCollectionIfNotExists(ctx, "docs", 768); err != nil {
 		log.Fatal("Erro ao criar collection:", err)
 	}
-
-	err = milvus.CreateIndexIfNotExists(ctx, "docs", "embedding")
-	if err != nil {
+	if err := milvus.CreateIndexIfNotExists(ctx, "docs", "embedding"); err != nil {
 		log.Fatal("Erro ao criar índice:", err)
 	}
-
-	err = milvus.Client.LoadCollection(ctx, "docs", false)
-	if err != nil {
+	if err := milvus.Client.LoadCollection(ctx, "docs", false); err != nil {
 		log.Fatal("Erro ao carregar coleção:", err)
 	}
 
 	ollama := ollama.NewClient(os.Getenv("OLLAMA_HOST"))
 
-	err = tools.RunIngest(ctx, milvus, ollama, "nomic-embed-text", "context/produzindocerto.json")
-	if err != nil {
-		log.Fatalf("Erro ao ingerir contexto inicial: %v", err)
+	// // Ingesta do JSON estático
+	// if err := ingestor.RunIngest(ctx, milvus, ollama, "nomic-embed-text", "context/produzindocerto.json"); err != nil {
+	// 	log.Fatalf("Erro ao ingerir contexto do JSON: %v", err)
+	// }
+
+	// Ingesta dinâmica do banco de dados
+	if err := ingestor.RunIngestFromDB(ctx, milvus, ollama, "nomic-embed-text"); err != nil {
+		log.Fatalf("Erro ao ingerir contexto do banco de dados: %v", err)
 	}
 
 	r := router.NewRouter(ollama, milvus)
