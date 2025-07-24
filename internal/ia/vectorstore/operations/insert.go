@@ -11,7 +11,7 @@ func InsertChunksToMilvus(
 	ctx context.Context,
 	chunks []string, model string, meta map[string]string,
 	instance vectorstore.Milvus,
-	ollama ollama.Client,
+	ollama *ollama.Client,
 ) error {
 	if len(chunks) == 0 {
 		return fmt.Errorf("nenhum chunk fornecido para inserção")
