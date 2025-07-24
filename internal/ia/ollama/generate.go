@@ -9,6 +9,7 @@ type GenerateRequest struct {
 	Model  string `json:"model"`
 	Prompt string `json:"prompt"`
 	Stream bool   `json:"stream"`
+	System string `json:"system,omitempty"`
 }
 
 type GenerateResponse struct {
@@ -16,12 +17,17 @@ type GenerateResponse struct {
 	Done     bool   `json:"done"`
 }
 
-func (c *Client) Generate(ctx context.Context, model, prompt string) (string, error) {
+func (c *Client) Generate(ctx context.Context, model, prompt string, system string) (string, error) {
 	req := GenerateRequest{
 		Model:  model,
 		Prompt: prompt,
 		Stream: false,
 	}
+
+	if system != "" {
+		req.System = system
+	}
+
 	data, err := c.post(ctx, "/api/generate", req)
 	if err != nil {
 		return "", err

@@ -5,7 +5,7 @@ import (
 )
 
 var Models = map[string]string{
-	"llama3":           "llama3",
+	"llama3.1:8b":      "llama3.1:8b",
 	"codellama":        "codellama",
 	"nomic-embed-text": "nomic-embed-text",
 	"hf.co/iamcoder18/AceMath-7B-Instruct-Q4_K_M-GGUF": "hf.co/iamcoder18/AceMath-7B-Instruct-Q4_K_M-GGUF",
@@ -33,7 +33,7 @@ func SelectModel(prompt string) string {
 		}
 	}
 
-	bestModel := "llama3"
+	bestModel := "llama3.1:8b"
 	highest := 0
 	for model, score := range scores {
 		if score > highest {

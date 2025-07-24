@@ -1,0 +1,62 @@
+[
+    {
+        "id": 1,
+        "text": "O que é Produzindo Certo?",
+        "content": "Produzindo Certo é uma agtech brasileira que conecta empresas e produtores rurais por meio de assistência técnica e tecnologia. A plataforma permite monitorar aspectos ambientais, sociais e produtivos das propriedades, promovendo uma cadeia de fornecimento agrícola mais transparente e sustentável.",
+        "source": "context/produzindocerto.json"
+    },
+    {
+        "id": 2,
+        "text": "Quais são os serviços oferecidos pela Produzindo Certo?",
+        "content": "Os principais serviços oferecidos são: assistência técnica socioambiental no campo, plataforma digital de monitoramento, suporte a certificações, conexão com empresas compradoras, apoio para acesso a crédito rural e capacitação de produtores.",
+        "source": "context/produzindocerto.json"
+    },
+    {
+        "id": 3,
+        "text": "Quais são os valores e ideais da Produzindo Certo?",
+        "content": "A Produzindo Certo defende o agro responsável, promovendo equilíbrio entre produção e sustentabilidade. Valorizam transparência na cadeia produtiva, inclusão do produtor, responsabilidade socioambiental e uso da tecnologia para uma produção mais eficiente.",
+        "source": "context/produzindocerto.json"
+    },
+    {
+        "id": 4,
+        "text": "Em quais áreas a Produzindo Certo atua?",
+        "content": "A empresa atua nas áreas de monitoramento socioambiental, assistência técnica rural, implementação de certificações, acesso a crédito verde, educação no campo e rastreabilidade na cadeia de fornecimento de commodities agrícolas.",
+        "source": "context/produzindocerto.json"
+    },
+    {
+        "id": 5,
+        "text": "O que é a plataforma da Produzindo Certo?",
+        "content": "A plataforma da Produzindo Certo é um sistema digital que permite registrar, acompanhar e analisar dados socioambientais, produtivos e legais das propriedades rurais. Através dela, empresas podem rastrear fornecedores e produtores podem melhorar sua gestão.",
+        "source": "context/produzindocerto.json"
+    },
+    {
+        "id": 6,
+        "text": "Quais são os aplicativos da Produzindo Certo?",
+        "content": "A Produzindo Certo possui dois principais aplicativos: 'Eu Produzo Certo', voltado para os produtores acessarem dados e relatórios da sua propriedade, e 'Eu Coleto Certo', usado por técnicos de campo para realizar coletas mesmo offline.",
+        "source": "context/produzindocerto.json"
+    },
+    {
+        "id": 7,
+        "text": "A Produzindo Certo oferece suporte a certificações?",
+        "content": "Sim, a Produzindo Certo apoia propriedades na obtenção de certificações como RTRS, ISCC, Bem-Estar Animal, Produção de Baixo Carbono, entre outras. O suporte inclui preparação, diagnóstico e acompanhamento técnico.",
+        "source": "context/produzindocerto.json"
+    },
+    {
+        "id": 8,
+        "text": "A Produzindo Certo ajuda com acesso a crédito rural?",
+        "content": "Sim, a Produzindo Certo facilita o acesso a linhas de crédito rural com melhores condições para produtores que atendem critérios socioambientais, inclusive em parceria com programas como o Agro Brasil+Sustentável.",
+        "source": "context/produzindocerto.json"
+    },
+    {
+        "id": 9,
+        "text": "A Produzindo Certo oferece capacitação para produtores?",
+        "content": "Sim. A Produzindo Certo oferece treinamentos presenciais, oficinas, materiais digitais e flashcasts para produtores e técnicos, promovendo boas práticas agrícolas, gestão e sustentabilidade.",
+        "source": "context/produzindocerto.json"
+    },
+    {
+        "id": 10,
+        "text": "A Produzindo Certo conecta produtores com empresas?",
+        "content": "Sim. Um dos principais papéis da Produzindo Certo é conectar produtores rurais que seguem boas práticas com empresas que desejam comprar de forma responsável, garantindo rastreabilidade e transparência na cadeia de fornecimento.",
+        "source": "context/produzindocerto.json"
+    }
+]
