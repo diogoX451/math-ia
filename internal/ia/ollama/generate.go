@@ -3,6 +3,7 @@ package ollama
 import (
 	"context"
 	"encoding/json"
+	"math-ia/internal/tools"
 )
 
 type GenerateRequest struct {
@@ -17,15 +18,13 @@ type GenerateResponse struct {
 	Done     bool   `json:"done"`
 }
 
-func (c *Client) Generate(ctx context.Context, model, prompt string, system string) (string, error) {
+func (c *Client) Generate(ctx context.Context, model string, question string, contextText string) (string, error) {
+	newPrompt := tools.BuildPrompt([]string{contextText}, question)
+
 	req := GenerateRequest{
 		Model:  model,
-		Prompt: prompt,
+		Prompt: newPrompt,
 		Stream: false,
-	}
-
-	if system != "" {
-		req.System = system
 	}
 
 	data, err := c.post(ctx, "/api/generate", req)

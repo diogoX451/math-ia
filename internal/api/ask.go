@@ -4,9 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
+	"math-ia/internal/db/loader"
 	"math-ia/internal/ia/ollama"
 	"math-ia/internal/ia/selector"
 	"math-ia/internal/ia/vectorstore"
+	"strconv"
 	"strings"
 
 	"net/http"
@@ -59,30 +62,62 @@ func (a *Handler) AskWithContext(w http.ResponseWriter, r *http.Request) {
 	}
 
 	model := selector.SelectModel(req.Prompt)
-	println("Selected model:", model)
+	log.Println("Selected model:", model)
 
-	embedding, err := a.OllamaClient.GenerateEmbedding(context.Background(), "nomic-embed-text", req.Prompt)
+	embedding, err := a.OllamaClient.GenerateEmbedding(r.Context(), "nomic-embed-text", req.Prompt)
 	if err != nil {
 		http.Error(w, "Erro ao gerar embedding: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
+	log.Println("Tamanho do embedding gerado:", len(embedding))
 
-	fmt.Println("Tamanho do embedding gerado:", len(embedding))
-
-	similarDocs, err := a.Vector.SearchSimilar(context.Background(), embedding, 3)
+	similarDocs, err := a.Vector.SearchSimilar(r.Context(), embedding, 10)
 	if err != nil {
 		http.Error(w, "Erro na busca vetorial: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	var contextBuilder strings.Builder
-	for _, doc := range similarDocs {
-		contextBuilder.WriteString(doc.Content)
-		contextBuilder.WriteString("\n---\n")
-	}
-	context := contextBuilder.String()
+	visited := make(map[string]bool)
 
-	answer, err := a.OllamaClient.Generate(r.Context(), model, req.Prompt, context)
+	println("Found", len(similarDocs), "similar documents")
+	println("Similar documents:", similarDocs)
+
+	for _, doc := range similarDocs {
+		parts := strings.Split(doc.Source, ":")
+		if len(parts) != 2 {
+			continue
+		}
+		entity := parts[0]
+		idStr := parts[1]
+
+		if visited[doc.Source] {
+			continue
+		}
+		visited[doc.Source] = true
+
+		id, err := strconv.ParseInt(idStr, 10, 64)
+		if err != nil {
+			continue
+		}
+
+		relContext, err := loader.GetEntityContext(entity, id)
+		if err != nil {
+			log.Printf("Erro ao buscar contexto de %s:%d => %v", entity, id, err)
+			continue
+		}
+
+		contextBuilder.WriteString(fmt.Sprintf("Fonte: %s:%d\n", entity, id))
+		for _, line := range relContext {
+			contextBuilder.WriteString(line + "\n")
+		}
+		contextBuilder.WriteString("\n---\n")
+		println("Contexto para", entity, "ID", id, ":", strings.Join(relContext, "\n"))
+	}
+
+	finalContext := contextBuilder.String()
+
+	answer, err := a.OllamaClient.Generate(r.Context(), model, req.Prompt, finalContext)
 	if err != nil {
 		http.Error(w, "Erro ao gerar resposta: "+err.Error(), http.StatusInternalServerError)
 		return
