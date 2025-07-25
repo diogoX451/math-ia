@@ -80,12 +80,14 @@ func (a *Handler) AskWithContext(w http.ResponseWriter, r *http.Request) {
 	var contextBuilder strings.Builder
 	visited := make(map[string]bool)
 
-	println("Found", len(similarDocs), "similar documents")
-	println("Similar documents:", similarDocs)
+	println("Encontrados", len(similarDocs), "documentos similares")
 
 	for _, doc := range similarDocs {
+		println("Processando documento:", doc.Content)
 		parts := strings.Split(doc.Source, ":")
 		if len(parts) != 2 {
+			contextBuilder.WriteString(fmt.Sprintf("Conteúdo: %s\n", doc.Content))
+			contextBuilder.WriteString(fmt.Sprintf("Fonte desconhecida: %s\n", doc.Source))
 			continue
 		}
 		entity := parts[0]
@@ -112,7 +114,6 @@ func (a *Handler) AskWithContext(w http.ResponseWriter, r *http.Request) {
 			contextBuilder.WriteString(line + "\n")
 		}
 		contextBuilder.WriteString("\n---\n")
-		println("Contexto para", entity, "ID", id, ":", strings.Join(relContext, "\n"))
 	}
 
 	finalContext := contextBuilder.String()

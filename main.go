@@ -61,9 +61,9 @@ func main() {
 	ollama := ollama.NewClient(os.Getenv("OLLAMA_HOST"))
 
 	// // Ingesta do JSON estático
-	// if err := ingestor.RunIngest(ctx, milvus, ollama, "nomic-embed-text", "context/produzindocerto.json"); err != nil {
-	// 	log.Fatalf("Erro ao ingerir contexto do JSON: %v", err)
-	// }
+	if err := ingestor.RunIngest(ctx, milvus, ollama, "nomic-embed-text", "context/produzindocerto.json"); err != nil {
+		log.Fatalf("Erro ao ingerir contexto do JSON: %v", err)
+	}
 
 	// Ingesta dinâmica do banco de dados
 	if err := ingestor.RunIngestFromDB(ctx, milvus, ollama, "nomic-embed-text"); err != nil {

@@ -19,12 +19,12 @@ type GenerateResponse struct {
 }
 
 func (c *Client) Generate(ctx context.Context, model string, question string, contextText string) (string, error) {
-	newPrompt := tools.BuildPrompt([]string{contextText}, question)
-
+	newPrompt := tools.BuildPrompt([]string{contextText})
 	req := GenerateRequest{
 		Model:  model,
-		Prompt: newPrompt,
+		Prompt: question,
 		Stream: false,
+		System: newPrompt,
 	}
 
 	data, err := c.post(ctx, "/api/generate", req)

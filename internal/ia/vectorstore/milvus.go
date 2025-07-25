@@ -155,19 +155,36 @@ func (m *Milvus) SearchSimilar(ctx context.Context, query []float32, topK int) (
 
 	var out []SearchResult
 	for _, hit := range results {
-		textCol := hit.Fields[0].(*entity.ColumnVarChar)
-		contentCol := hit.Fields[1].(*entity.ColumnVarChar)
-		sourceCol := hit.Fields[2].(*entity.ColumnVarChar)
+		fields := map[string]*entity.ColumnVarChar{}
+		for _, field := range hit.Fields {
+			switch col := field.(type) {
+			case *entity.ColumnVarChar:
+				switch col.Name() {
+				case "text":
+					fields["text"] = col
+				case "content":
+					fields["content"] = col
+				case "source":
+					fields["source"] = col
+				}
+			}
+		}
 
-		text, _ := textCol.ValueByIdx(0)
-		content, _ := contentCol.ValueByIdx(0)
-		source, _ := sourceCol.ValueByIdx(0)
+		textCol := fields["text"]
+		contentCol := fields["content"]
+		sourceCol := fields["source"]
 
-		out = append(out, SearchResult{
-			Text:    text,
-			Content: content,
-			Source:  source,
-		})
+		for i := 0; i < textCol.Len(); i++ {
+			text, _ := textCol.ValueByIdx(i)
+			content, _ := contentCol.ValueByIdx(i)
+			source, _ := sourceCol.ValueByIdx(i)
+
+			out = append(out, SearchResult{
+				Text:    text,
+				Content: content,
+				Source:  source,
+			})
+		}
 	}
 
 	return out, nil

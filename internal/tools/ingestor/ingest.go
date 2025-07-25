@@ -102,7 +102,6 @@ func RunIngestFromDB(ctx context.Context, milvus *vectorstore.Milvus, ollama *ol
 
 			if len(content) > maxContentLength {
 				content = content[:maxContentLength]
-				fmt.Printf("Conteúdo truncado para %s:%d\n", entity, id)
 			}
 
 			err = milvus.UpsertVector(ctx, id, fmt.Sprintf("Contexto de %s %d", entity, id), content, embedding, map[string]string{
