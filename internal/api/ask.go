@@ -38,7 +38,6 @@ func (h *Handler) Ask(w http.ResponseWriter, r *http.Request) {
 	}
 
 	model := selector.SelectModel(req.Prompt)
-	println("Selected model:", model)
 	resp, err := h.OllamaClient.Generate(context.Background(), model, req.Prompt, "")
 	if err != nil {
 		http.Error(w, "Erro ao gerar resposta: "+err.Error(), http.StatusInternalServerError)
@@ -59,7 +58,6 @@ func (a *Handler) AskWithContext(w http.ResponseWriter, r *http.Request) {
 	}
 
 	model := selector.SelectModel(req.Prompt)
-	println("Selected model:", model)
 
 	embedding, err := a.OllamaClient.GenerateEmbedding(context.Background(), "nomic-embed-text", req.Prompt)
 	if err != nil {

@@ -55,7 +55,7 @@ func main() {
 
 	ollama := ollama.NewClient(os.Getenv("OLLAMA_HOST"))
 
-	err = tools.RunIngest(ctx, milvus, ollama, "nomic-embed-text", "context/produzindocerto.json")
+	err = tools.RunIngest(ctx, milvus, ollama, "nomic-embed-text", "./examples")
 	if err != nil {
 		log.Fatalf("Erro ao ingerir contexto inicial: %v", err)
 	}
