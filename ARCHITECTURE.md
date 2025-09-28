@@ -368,7 +368,3 @@ func main() {
 1. Implementar interface comum
 2. Adapter pattern para diferentes providers
 3. Configuração via environment
-
----
-
-Esta arquitetura proporciona um sistema robusto, escalável e maintível para gestão de modelos de IA, combinando as melhores práticas de desenvolvimento com tecnologias modernas de AI/ML.
